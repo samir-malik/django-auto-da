@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block headcontent %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+
+        .editor {
+            display: inline-flex;
+            gap: 10px;
+            font-family: monospace;
+            line-height: 21px;
+            background: #ffffff;
+            border-radius: 2px;
+            padding: 20px 10px;
+            height: 200px;
+            overflow-y: auto;
+            border: solid 1px black;
+        }
+
+        .line-numbers {
+            width: 20px;
+            text-align: right;
+            height: 9999px;
+        }
+
+        .line-numbers span {
+            counter-increment:  linenumber;
+        }
+
+        .line-numbers span::before {
+            content: counter(linenumber);
+            display: block;
+            color: #506882;
+        }
+
+        textarea {
+        height: 9999px;
+            line-height: 21px;
+            overflow-y: hidden;
+            padding: 0;
+            border: black;
+            background: #ffffff;
+            color: #100f0f;
+            min-width: 500px;
+            outline: none;
+            resize: none;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+    </style>
+
+    <script>
+        function getSqlCheckResults() {
+            const data = {
+              sql: document.getElementById("textarea_id").value
+            };
+
+            axios({
+              method: "GET",
+              url:"http://127.0.0.1:8000/sql_standards_results",
+                params: data,
+            }).then((response)=>{
+              const data = response.data
+                console.log(data);
+            }).catch((error) => {
+              if (error.response) {
+                console.log(error.response);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+                }
+            })
+        }
+    </script>
+
+
+{% endblock %}
+
+{% block content %}
+    <h1 class="mt-2">Sql Standards</h1>
+    <hr class="mt-0 mb-4">
+
+    <button onclick="getSqlCheckResults()" type="button" id="check_standards_btn">Click Me!</button>
+    <div class="editor">
+      <div class="line-numbers">
+        <span></span>
+      </div>
+      <textarea id="textarea_id"></textarea>
+    </div>
+    <div id ="check_standards_btn">
+<table>
+  <tr>
+    <th>Line</th>
+    <th>Message</th>
+  </tr>
+  <tr>
+    <td></td>
+    <td>no messages</td>
+  </tr>
+</table>
+    </div>
+
+
+ <script>
+      const textarea = document.querySelector('textarea')
+      const lineNumbers = document.querySelector('.line-numbers')
+
+      textarea.addEventListener('keyup', event => {
+        const numberOfLines = event.target.value.split('\n').length
+
+        lineNumbers.innerHTML = Array(numberOfLines)
+          .fill('<span></span>')
+          .join('')
+      })
+
+      textarea.addEventListener('keydown', event => {
+        if (event.key === 'Tab') {
+          const start = textarea.selectionStart
+          const end = textarea.selectionEnd
+
+          textarea.value = textarea.value.substring(0, start) + '\t' + textarea.value.substring(end)
+          textarea.focus()
+
+          event.preventDefault()
+        }
+      })
+    </script>
+
+
+
+{% endblock %}
