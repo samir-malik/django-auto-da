@@ -56,28 +56,28 @@
 
     </style>
 
-    <script>
-        function getSqlCheckResults() {
-            const data = {
-              sql: document.getElementById("textarea_id").value
-            };
-
-            axios({
-              method: "GET",
-              url:"http://127.0.0.1:8000/sql_standards_results",
-                params: data,
-            }).then((response)=>{
-              const data = response.data
-                console.log(data);
-            }).catch((error) => {
-              if (error.response) {
-                console.log(error.response);
-                console.log(error.response.status);
-                console.log(error.response.headers);
-                }
-            })
-        }
-    </script>
+{#    <script>#}
+{#        function getSqlCheckResults() {#}
+{#            const data = {#}
+{#              sql: document.getElementById("textarea_id").value#}
+{#            };#}
+{##}
+{#            axios({#}
+{#              method: "GET",#}
+{#              url:"http://127.0.0.1:8000/sql_standards_results",#}
+{#                params: data,#}
+{#            }).then((response)=>{#}
+{#              const data = response.data#}
+{#                console.log(data);#}
+{#            }).catch((error) => {#}
+{#              if (error.response) {#}
+{#                console.log(error.response);#}
+{#                console.log(error.response.status);#}
+{#                console.log(error.response.headers);#}
+{#                }#}
+{#            })#}
+{#        }#}
+{#    </script>#}
 
 
 {% endblock %}
@@ -86,24 +86,22 @@
     <h1 class="mt-2">Sql Standards</h1>
     <hr class="mt-0 mb-4">
 
-    <button onclick="getSqlCheckResults()" type="button" id="check_standards_btn">Click Me!</button>
+    <button type="button" id="check_standards_btn"
+
+    hx-get="/sql_standards_results"
+    hx-trigger="click"
+    hx-target="#check_standards_results_id"
+    hx-swap="innerHTML">
+        Validate
+    </button>
     <div class="editor">
       <div class="line-numbers">
         <span></span>
       </div>
       <textarea id="textarea_id"></textarea>
     </div>
-    <div id ="check_standards_btn">
-<table>
-  <tr>
-    <th>Line</th>
-    <th>Message</th>
-  </tr>
-  <tr>
-    <td></td>
-    <td>no messages</td>
-  </tr>
-</table>
+    <div id ="check_standards_results_id">
+    <p>click validate to get results</p>
     </div>
 
 
