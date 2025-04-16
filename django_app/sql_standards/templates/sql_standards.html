@@ -1,9 +1,6 @@
 {% extends 'base.html' %}
 
-{% block headcontent %}
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block head_content %}
 
     <style>
 
@@ -56,30 +53,6 @@
 
     </style>
 
-{#    <script>#}
-{#        function getSqlCheckResults() {#}
-{#            const data = {#}
-{#              sql: document.getElementById("textarea_id").value#}
-{#            };#}
-{##}
-{#            axios({#}
-{#              method: "GET",#}
-{#              url:"http://127.0.0.1:8000/sql_standards_results",#}
-{#                params: data,#}
-{#            }).then((response)=>{#}
-{#              const data = response.data#}
-{#                console.log(data);#}
-{#            }).catch((error) => {#}
-{#              if (error.response) {#}
-{#                console.log(error.response);#}
-{#                console.log(error.response.status);#}
-{#                console.log(error.response.headers);#}
-{#                }#}
-{#            })#}
-{#        }#}
-{#    </script>#}
-
-
 {% endblock %}
 
 {% block content %}
@@ -103,7 +76,6 @@
     <div id ="check_standards_results_id">
     <p>click validate to get results</p>
     </div>
-
 
  <script>
       const textarea = document.querySelector('textarea')
@@ -129,7 +101,6 @@
         }
       })
     </script>
-
 
 
 {% endblock %}
