@@ -8,13 +8,17 @@
             display: inline-flex;
             gap: 10px;
             font-family: monospace;
+            font-size: 12px;
             line-height: 21px;
             background: #ffffff;
             border-radius: 2px;
             padding: 20px 10px;
-            height: 200px;
+            height: 600px;
+            width: 700px;
             overflow-y: auto;
             border: solid 1px black;
+            border-radius: 10px;
+            overflow-y:scroll;
         }
 
         .line-numbers {
@@ -44,11 +48,31 @@
             min-width: 500px;
             outline: none;
             resize: none;
+            white-space: nowrap;
+            overflow: scroll;
+            font-size: 12px;
         }
 
         table, th, td {
             border: 1px solid black;
             border-collapse: collapse;
+            font-size: 12px;
+        }
+        th, td {
+            padding: 10px;
+        }
+        th {
+            background-color: #0e2238;
+            color: white
+        }
+        table td:nth-child(1) {
+            text-align: center;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 20px;
         }
 
     </style>
@@ -56,28 +80,37 @@
 {% endblock %}
 
 {% block content %}
-    <h1 class="mt-2">Sql Standards</h1>
-    <hr class="mt-0 mb-4">
+    <h1 class="mt-2">SQL Standards</h1>
+    <div style="margin-top: 20px"></div>
 
-    <button type="button" id="check_standards_btn"
-
-    hx-get="/sql_standards_results"
-    hx-trigger="click"
-    hx-target="#check_standards_results_id"
-    hx-swap="innerHTML">
+    <button class="btn btn-primary"
+            style="background-color: #0e2238; border: none; margin-left: 310px"
+            type="button"
+            id="check_standards_btn"
+        hx-get="/sql_standards_results"
+        hx-trigger="click"
+        hx-target="#check_standards_results_id"
+        hx-swap="innerHTML">
         Validate
     </button>
-    <div class="editor">
-      <div class="line-numbers">
-        <span></span>
-      </div>
-      <textarea id="textarea_id"></textarea>
-    </div>
-    <div id ="check_standards_results_id">
-    <p>click validate to get results</p>
-    </div>
+    <div style="margin-top: 5px"></div>
 
- <script>
+<div class="grid-container">
+    <div class="grid-child">
+        <div class="editor">
+            <div class="line-numbers">
+            <span></span>
+        </div>
+            <textarea placeholder="Enter SQL here..." id="textarea_id"></textarea>
+        </div>
+    </div>
+    <div class="grid-child">
+        <div id ="check_standards_results_id">
+        </div>
+    </div>
+</div>
+
+<script>
       const textarea = document.querySelector('textarea')
       const lineNumbers = document.querySelector('.line-numbers')
 
