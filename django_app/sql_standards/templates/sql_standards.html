@@ -4,53 +4,10 @@
 
     <style>
 
-        .editor {
-            display: inline-flex;
-            gap: 10px;
-            font-family: monospace;
-            font-size: 12px;
-            line-height: 21px;
-            background: #ffffff;
-            border-radius: 2px;
-            padding: 20px 10px;
-            height: 600px;
-            width: 700px;
-            overflow-y: auto;
-            border: solid 1px black;
-            border-radius: 10px;
-            overflow-y:scroll;
-        }
-
-        .line-numbers {
-            width: 20px;
-            text-align: right;
-            height: 9999px;
-        }
-
-        .line-numbers span {
-            counter-increment:  linenumber;
-        }
-
-        .line-numbers span::before {
-            content: counter(linenumber);
-            display: block;
-            color: #506882;
-        }
-
-        textarea {
-        height: 9999px;
-            line-height: 21px;
-            overflow-y: hidden;
-            padding: 0;
-            border: black;
-            background: #ffffff;
-            color: #100f0f;
-            min-width: 500px;
-            outline: none;
-            resize: none;
-            white-space: nowrap;
-            overflow: scroll;
-            font-size: 12px;
+        #editor {
+            width: 620px;
+            height: 80vh;
+            position: fixed;
         }
 
         table, th, td {
@@ -77,6 +34,14 @@
 
     </style>
 
+    <script>
+    function get_sql() {
+        var editor = ace.edit("editor");
+        return editor.getValue();
+    }
+
+    </script>
+
 {% endblock %}
 
 {% block content %}
@@ -88,6 +53,7 @@
             type="button"
             id="check_standards_btn"
         hx-get="/sql_standards_results"
+        hx-vals='js:{sql: get_sql()}'
         hx-trigger="click"
         hx-target="#check_standards_results_id"
         hx-swap="innerHTML">
@@ -97,43 +63,18 @@
 
 <div class="grid-container">
     <div class="grid-child">
-        <div class="editor">
-            <div class="line-numbers">
-            <span></span>
-        </div>
-            <textarea placeholder="Enter SQL here..." id="textarea_id"></textarea>
+        <div id="editor">
         </div>
     </div>
     <div class="grid-child">
-        <div id ="check_standards_results_id">
+        <div id ="check_standards_results_id" style="margin-left: 300px">
         </div>
     </div>
 </div>
 
 <script>
-      const textarea = document.querySelector('textarea')
-      const lineNumbers = document.querySelector('.line-numbers')
-
-      textarea.addEventListener('keyup', event => {
-        const numberOfLines = event.target.value.split('\n').length
-
-        lineNumbers.innerHTML = Array(numberOfLines)
-          .fill('<span></span>')
-          .join('')
-      })
-
-      textarea.addEventListener('keydown', event => {
-        if (event.key === 'Tab') {
-          const start = textarea.selectionStart
-          const end = textarea.selectionEnd
-
-          textarea.value = textarea.value.substring(0, start) + '\t' + textarea.value.substring(end)
-          textarea.focus()
-
-          event.preventDefault()
-        }
-      })
-    </script>
-
+    var editor = ace.edit("editor");
+    editor.session.setMode("ace/mode/sql");
+</script>
 
 {% endblock %}
